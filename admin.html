@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEON TECH — Панель администратора</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-dark: #121212; --bg-card: #1A1A1A; --bg-card-hover: #222222;
+      --neon-green: #CCFF00; --neon-green-glow: rgba(204, 255, 0, 0.4);
+      --text-main: #FFFFFF; --text-muted: #A0A0A0; --border-color: #2E2E2E; --transition: all 0.3s ease;
+    }
+    body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-dark); color: var(--text-main); padding: 20px; display: none; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px 30px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .logo { font-size: 24px; font-weight: 900; color: var(--text-main); text-decoration: none; }
+    .logo span { color: var(--neon-green); text-shadow: 0 0 12px var(--neon-green-glow); }
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+    .tab-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 12px 24px; border-radius: 12px; cursor: pointer; font-weight: 700; transition: var(--transition); }
+    .tab-btn.active { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green-glow); }
+    .content-section { display: none; }
+    .content-section.active { display: block; }
+    table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); }
+    th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
+    th { background: #222; color: var(--neon-green); font-size: 14px; text-transform: uppercase; }
+    tr:hover { background: var(--bg-card-hover); }
+    .btn-delete { background: #ff4444; color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 12px; transition: var(--transition); }
+    .btn-delete:hover { background: #cc0000; box-shadow: 0 0 10px rgba(255, 68, 68, 0.4); }
+    .price-tag { color: var(--neon-green); font-weight: 700; }
+    .stars { color: var(--neon-green); }
+    .back-link { display: inline-block; margin-top: 20px; color: var(--text-muted); text-decoration: none; font-size: 14px; }
+    .back-link:hover { color: var(--neon-green); }
+    .empty-msg { text-align: center; padding: 40px; color: var(--text-muted); font-size: 18px; background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <a href="index.html" class="logo">NEON<span>ADMIN</span></a>
+      <div class="admin-title">Панель администратора</div>
+    </header>
+    <div class="tabs">
+      <button class="tab-btn active" id="ordersTabBtn" onclick="showTab('orders')">📦 Заказы</button>
+      <button class="tab-btn" id="reviewsTabBtn" onclick="showTab('reviews')">⭐ Отзывы</button>
+    </div>
+    <div id="ordersSection" class="content-section active">
+      <table id="ordersTable">
+        <thead><tr><th>Время</th><th>Имя</th><th>Телефон</th><th>Сумма</th><th>Товары</th><th>Действие</th></tr></thead>
+        <tbody id="ordersBody"></tbody>
+      </table>
+    </div>
+    <div id="reviewsSection" class="content-section">
+      <table id="reviewsTable">
+        <thead><tr><th>Имя</th><th>Товар</th><th>Оценка</th><th>Текст</th><th>Дата</th><th>Действие</th></tr></thead>
+        <tbody id="reviewsBody"></tbody>
+      </table>
+    </div>
+    <a href="index.html" class="back-link">← Вернуться на сайт</a>
+  </div>
+  <script>
+    const password = prompt("Введите пароль администратора:");
+    if (password === "admin123") {
+      document.body.style.display = "block";
+      init();
+    } else {
+      alert("Неверный пароль!");
+      window.location.href = "index.html";
+    }
+    function init() { renderOrders(); renderReviews(); }
+    function showTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+      if (tabName === 'orders') {
+        document.getElementById('ordersTabBtn').classList.add('active');
+        document.getElementById('ordersSection').classList.add('active');
+        renderOrders();
+      } else {
+        document.getElementById('reviewsTabBtn').classList.add('active');
+        document.getElementById('reviewsSection').classList.add('active');
+        renderReviews();
+      }
+    }
+    function renderOrders() {
+      const orders = JSON.parse(localStorage.getItem('neon_orders') || '[]');
+      const tbody = document.getElementById('ordersBody');
+      const table = document.getElementById('ordersTable');
+      const section = document.getElementById('ordersSection');
+      const oldMsg = section.querySelector('.empty-msg'); if (oldMsg) oldMsg.remove();
+      if (orders.length === 0) {
+        table.style.display = 'none';
+        const msg = document.createElement('div'); msg.className = 'empty-msg'; msg.textContent = 'Заказов пока нет';
+        section.appendChild(msg); return;
+      }
+      table.style.display = 'table'; tbody.innerHTML = '';
+      orders.slice().reverse().forEach((order, index) => {
+        const itemsList = order.items.map(item => `${item.title} (x${item.qty})`).join(', ');
+        const tr = document.createElement('tr'); const realIndex = orders.length - 1 - index;
+        tr.innerHTML = `<td>${order.date}</td><td>${order.customer.name}</td><td>${order.customer.phone}</td><td class="price-tag">${order.total.toLocaleString('ru-RU')} ₽</td><td class="item-list">${itemsList}</td><td><button class="btn-delete" onclick="deleteOrder(${realIndex})">Удалить</button></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+    function deleteOrder(index) {
+      if (confirm('Удалить этот заказ?')) {
+        let orders = JSON.parse(localStorage.getItem('neon_orders') || '[]');
+        orders.splice(index, 1); localStorage.setItem('neon_orders', JSON.stringify(orders)); renderOrders();
+      }
+    }
+    function getProducts() {
+      return [
+        { id: 1, title: 'Беспроводные наушники' },
+        { id: 2, title: 'Механическая клавиатура' },
+        { id: 3, title: 'Игровая мышь' },
+        { id: 4, title: 'VR-очки' },
+        { id: 5, title: 'Умные часы' },
+        { id: 6, title: 'Колонка' },
+        { id: 7, title: 'Микрофон' },
+        { id: 8, title: 'Power Bank' }
+      ];
+    }
+    function flattenReviews() {
+      const all = JSON.parse(localStorage.getItem('product_reviews') || '{}');
+      const result = [];
+      Object.keys(all).forEach(productId => {
+        all[productId].forEach((review, i) => {
+          result.push({
+            id: `${productId}_${i}`,
+            productId: parseInt(productId, 10),
+            name: review.name,
+            rating: review.rating,
+            text: review.text,
+            date: review.date
+          });
+        });
+      });
+      return result;
+    }
+    function renderReviews() {
+      const reviews = flattenReviews();
+      const tbody = document.getElementById('reviewsBody');
+      const table = document.getElementById('reviewsTable');
+      const section = document.getElementById('reviewsSection');
+      const products = getProducts();
+      const oldMsg = section.querySelector('.empty-msg'); if (oldMsg) oldMsg.remove();
+      if (reviews.length === 0) {
+        table.style.display = 'none';
+        const msg = document.createElement('div'); msg.className = 'empty-msg'; msg.textContent = 'Отзывов пока нет';
+        section.appendChild(msg); return;
+      }
+      table.style.display = 'table'; tbody.innerHTML = '';
+      reviews.slice().reverse().forEach((review, index) => {
+        const product = products.find(p => p.id === review.productId) || { title: 'Товар #' + review.productId };
+        const tr = document.createElement('tr');
+        const realIndex = reviews.length - 1 - index;
+        tr.innerHTML = `
+          <td>${escapeHtml(review.name)}</td>
+          <td>${escapeHtml(product.title)}</td>
+          <td class="stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</td>
+          <td>${escapeHtml(review.text)}</td>
+          <td>${escapeHtml(review.date)}</td>
+          <td><button class="btn-delete" onclick="deleteReview(${realIndex})">Удалить</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+    function deleteReview(index) {
+      if (!confirm('Удалить этот отзыв?')) return;
+      let reviews = flattenReviews();
+      const target = reviews[index];
+      if (!target) return;
+      const all = JSON.parse(localStorage.getItem('product_reviews') || '{}');
+      if (all[target.productId]) {
+        all[target.productId].splice(target.id.split('_')[1], 1);
+        if (all[target.productId].length === 0) delete all[target.productId];
+      }
+      localStorage.setItem('product_reviews', JSON.stringify(all));
+      renderReviews();
+    }
+  </script>
+</body>
+</html>

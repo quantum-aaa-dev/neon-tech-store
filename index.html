@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEON TECH — Интернет-магазин цифровых гаджетов</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-dark: #121212;
+      --bg-card: #1A1A1A;
+      --bg-card-hover: #222222;
+      --neon-green: #CCFF00;
+      --neon-green-glow: rgba(204, 255, 0, 0.4);
+      --neon-green-hover: #b3e600;
+      --text-main: #FFFFFF;
+      --text-muted: #A0A0A0;
+      --border-color: #2E2E2E;
+      --transition: all 0.3s ease;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+    .dashboard {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .header {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { font-size: 24px; font-weight: 900; color: var(--text-main); text-decoration: none; letter-spacing: 1px; }
+    .logo span { color: var(--neon-green); text-shadow: 0 0 12px var(--neon-green-glow); }
+    .nav { display: flex; gap: 28px; }
+    .nav__link { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 15px; transition: var(--transition); }
+    .nav__link:hover { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green-glow); }
+    .cart-btn {
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: var(--transition);
+    }
+    .cart-btn:hover { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green-glow); }
+    .cart-badge {
+      background-color: var(--neon-green);
+      color: #000;
+      font-size: 12px;
+      font-weight: 900;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 8px var(--neon-green-glow);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 28px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+    }
+    .btn--primary { background-color: var(--neon-green); color: #000; box-shadow: 0 0 15px var(--neon-green-glow); }
+    .btn--primary:hover { background-color: var(--neon-green-hover); box-shadow: 0 0 25px var(--neon-green); transform: translateY(-2px); }
+    .btn--large { padding: 16px 36px; font-size: 18px; }
+    .btn--full { width: 100%; }
+    .hero {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 60px 50px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+      gap: 40px;
+      overflow: hidden;
+    }
+    .hero__title { font-size: 48px; font-weight: 900; line-height: 1.15; margin-bottom: 20px; letter-spacing: 1px; }
+    .hero__title span { color: var(--neon-green); text-shadow: 0 0 20px var(--neon-green-glow); }
+    .hero__subtitle { font-size: 16px; color: var(--text-muted); margin-bottom: 36px; }
+    .hero__visual { display: flex; align-items: center; justify-content: center; }
+    .hero__3d-icon {
+      font-size: 140px;
+      animation: float 4s ease-in-out infinite;
+      filter: drop-shadow(0 0 35px var(--neon-green-glow));
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(3deg); }
+    }
+    .section-header { display: flex; align-items: center; justify-content: space-between; padding: 0 10px; }
+    .section-title { font-size: 28px; font-weight: 900; letter-spacing: 1px; }
+    .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .product-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+    }
+    .product-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      border-color: var(--neon-green);
+      box-shadow: 0 0 25px rgba(204, 255, 0, 0.2);
+      background-color: var(--bg-card-hover);
+    }
+    .product-img {
+      background-color: var(--bg-dark);
+      border-radius: 12px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .product-img img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      display: block;
+      transition: var(--transition);
+      transform: scale(1);
+    }
+    .product-card:hover .product-img { border-color: rgba(204, 255, 0, 0.4); box-shadow: inset 0 0 15px rgba(204, 255, 0, 0.15); }
+    .product-card:hover .product-img img { transform: scale(1.12); }
+    .product-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: var(--text-main); flex-grow: 1; }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; }
+    .product-price { font-size: 18px; font-weight: 900; color: var(--text-main); }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .feature-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 30px;
+      transition: var(--transition);
+    }
+    .feature-card:hover { border-color: var(--neon-green); box-shadow: 0 0 20px rgba(204, 255, 0, 0.15); }
+    .feature-icon { font-size: 38px; margin-bottom: 16px; }
+    .feature-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .feature-card p { color: var(--text-muted); font-size: 14px; }
+    .footer {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .footer p { color: var(--text-muted); font-size: 14px; }
+    .modal {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      padding: 20px;
+    }
+    .modal.active { opacity: 1; visibility: visible; }
+    .modal__content {
+      background-color: var(--bg-card);
+      border: 1px solid var(--neon-green);
+      box-shadow: 0 0 40px var(--neon-green-glow);
+      width: 100%;
+      max-width: 500px;
+      border-radius: 20px;
+      padding: 30px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.9);
+      transition: var(--transition);
+    }
+    .modal.active .modal__content { transform: scale(1); }
+    .modal__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 15px;
+    }
+    .modal__header h3 { font-size: 22px; font-weight: 900; }
+    .modal__close { background: none; border: none; color: var(--text-muted); font-size: 32px; cursor: pointer; transition: var(--transition); }
+    .modal__close:hover { color: var(--neon-green); }
+    .modal__body { overflow-y: auto; max-height: 280px; margin-bottom: 20px; flex-grow: 1; padding-right: 5px; }
+    .empty-cart { text-align: center; color: var(--text-muted); padding: 30px 0; font-size: 15px; }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      gap: 12px;
+    }
+    .cart-item__info { flex-grow: 1; }
+    .cart-item__title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .cart-item__price { color: var(--neon-green); font-weight: 700; font-size: 13px; }
+    .cart-item__controls { display: flex; align-items: center; gap: 8px; }
+    .qty-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 26px; height: 26px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-weight: 700; transition: var(--transition);
+    }
+    .qty-btn:hover { border-color: var(--neon-green); color: var(--neon-green); }
+    .cart-item__qty { font-weight: 700; font-size: 14px; min-width: 20px; text-align: center; }
+    .cart-item__remove { background: none; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; transition: var(--transition); }
+    .cart-item__remove:hover { color: #ff3333; }
+    .modal__footer { border-top: 1px solid var(--border-color); padding-top: 20px; }
+    .cart-total { display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: 900; margin-bottom: 20px; }
+    .cart-total span:last-child { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green-glow); }
+    .order-form h4 { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-main);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      transition: var(--transition);
+    }
+    .form-group input:focus { outline: none; border-color: var(--neon-green); box-shadow: 0 0 10px var(--neon-green-glow); }
+    .toast {
+      position: fixed; bottom: 30px; right: 30px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--neon-green);
+      color: var(--text-main);
+      padding: 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 0 25px var(--neon-green-glow);
+      z-index: 3000;
+      font-weight: 700;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: var(--transition);
+    }
+    .toast.active { transform: translateY(0); opacity: 1; }
+    @media (max-width: 1024px) {
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero { grid-template-columns: 1fr; text-align: center; padding: 40px 20px; }
+      .hero__visual { order: -1; }
+      .features-grid { grid-template-columns: 1fr; }
+      .nav { display: none; }
+    }
+    @media (max-width: 600px) {
+      .products-grid { grid-template-columns: 1fr; }
+      body { padding: 10px; }
+      .hero__title { font-size: 32px; }
+    }
+    /* Отзывы */
+    .reviews-section { padding: 0 10px; }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .review-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      transition: var(--transition);
+    }
+    .review-card:hover {
+      border-color: var(--neon-green);
+      box-shadow: 0 0 20px rgba(204, 255, 0, 0.15);
+    }
+    .review-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .review-author { font-weight: 700; font-size: 16px; }
+    .review-stars { color: var(--neon-green); font-size: 18px; letter-spacing: 2px; text-shadow: 0 0 8px var(--neon-green-glow); }
+    .review-text { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 10px; }
+    .review-date { color: #666; font-size: 12px; }
+    .no-reviews { color: var(--text-muted); text-align: center; padding: 40px; grid-column: 1 / -1; font-size: 15px; }
+    /* Модалка отзыва */
+    .review-modal {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 3000;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden;
+      transition: var(--transition);
+      padding: 20px;
+    }
+    .review-modal.active { opacity: 1; visibility: visible; }
+    .review-modal__content {
+      background-color: var(--bg-card);
+      border: 1px solid var(--neon-green);
+      box-shadow: 0 0 40px var(--neon-green-glow);
+      width: 100%; max-width: 450px;
+      border-radius: 20px;
+      padding: 30px;
+      transform: scale(0.9);
+      transition: var(--transition);
+    }
+    .review-modal.active .review-modal__content { transform: scale(1); }
+    .review-modal__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
+    .review-modal__header h3 { font-size: 22px; font-weight: 900; }
+    .review-modal__close { background: none; border: none; color: var(--text-muted); font-size: 32px; cursor: pointer; transition: var(--transition); }
+    .review-modal__close:hover { color: var(--neon-green); }
+    .star-rating { display: flex; gap: 8px; margin-bottom: 16px; }
+    .star-rating span {
+      font-size: 32px; cursor: pointer; color: #444; transition: var(--transition);
+    }
+    .star-rating span.active, .star-rating span:hover { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green-glow); }
+    .review-form textarea {
+      width: 100%; padding: 12px 16px;
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-main);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      resize: vertical;
+      min-height: 100px;
+      margin-bottom: 16px;
+      transition: var(--transition);
+    }
+    .review-form textarea:focus { outline: none; border-color: var(--neon-green); box-shadow: 0 0 10px var(--neon-green-glow); }
+    /* Модальное окно товара */
+    .product-modal {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 4000;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden;
+      transition: var(--transition);
+      padding: 20px;
+    }
+    .product-modal.active { opacity: 1; visibility: visible; }
+    .product-modal__content {
+      position: relative;
+      background-color: var(--bg-card);
+      border: 1px solid var(--neon-green);
+      box-shadow: 0 0 40px var(--neon-green-glow);
+      width: 100%; max-width: 760px;
+      border-radius: 20px;
+      padding: 30px;
+      max-height: 90vh;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 28px;
+      transform: scale(0.9) translateY(20px);
+      opacity: 0;
+      transition: var(--transition);
+    }
+    .product-modal.active .product-modal__content { transform: scale(1) translateY(0); opacity: 1; }
+    .product-modal__image {
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      min-height: 300px;
+    }
+    .product-modal__image img { width: 100%; height: auto; max-height: 380px; object-fit: contain; display: block; }
+    .product-modal__info { display: flex; flex-direction: column; min-width: 0; }
+    .product-modal__close {
+      position: absolute;
+      top: 15px; right: 15px;
+      background: var(--bg-card);
+      border: none;
+      outline: none;
+      color: var(--text-muted);
+      font-size: 24px; cursor: pointer;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+      z-index: 10;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    .product-modal__close:hover { color: var(--neon-green); box-shadow: 0 0 10px var(--neon-green-glow); transform: rotate(90deg); }
+    .product-modal__wrapper { position: relative; }
+    .product-modal__title { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
+    .product-modal__price { font-size: 22px; font-weight: 900; color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green-glow); margin-bottom: 14px; }
+    .product-modal__desc { color: var(--text-muted); font-size: 14px; margin-bottom: 18px; }
+    .product-modal__divider { border: none; border-top: 1px solid var(--border-color); margin-bottom: 14px; }
+    .product-reviews { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; max-height: 160px; overflow-y: auto; padding-right: 5px; }
+    .product-reviews .no-reviews { color: var(--text-muted); font-size: 13px; }
+    .product-review {
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 10px 14px;
+    }
+    .product-review__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .product-review__name { font-weight: 700; font-size: 13px; }
+    .product-review__stars { color: var(--neon-green); font-size: 13px; }
+    .product-review__text { color: var(--text-muted); font-size: 13px; }
+    .product-review__date { color: var(--text-muted); font-size: 11px; margin-top: 4px; opacity: 0.7; }
+    .product-review-form { display: flex; flex-direction: column; gap: 10px; }
+    .product-review-form input, .product-review-form textarea {
+      width: 100%; padding: 10px 14px;
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-main);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      transition: var(--transition);
+      resize: none;
+    }
+    .product-review-form input:focus, .product-review-form textarea:focus { outline: none; border-color: var(--neon-green); box-shadow: 0 0 10px var(--neon-green-glow); }
+    .product-modal__actions { margin-top: auto; padding-top: 18px; }
+    @media (max-width: 768px) {
+      .product-modal__content { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <header class="header">
+      <a href="#" class="logo">NEON<span>TECH</span></a>
+      <nav class="nav">
+        <a href="#catalog" class="nav__link">Каталог</a>
+        <a href="#features" class="nav__link">Преимущества</a>
+        <a href="#footer" class="nav__link">Контакты</a>
+      </nav>
+      <div class="header__actions">
+        <button class="cart-btn" id="cartToggle">🛒 Корзина <span class="cart-badge" id="cartBadge">0</span></button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero__content">
+        <h1 class="hero__title">ТЕХНОЛОГИИ<br>БУДУЩЕГО<br><span>СЕГОДНЯ</span></h1>
+        <p class="hero__subtitle">Интернет-магазин премиальных цифровых гаджетов и аксессуаров нового поколения.</p>
+        <a href="#catalog" class="btn btn--primary btn--large">Смотреть каталог</a>
+      </div>
+      <div class="hero__visual">
+        <div class="hero__3d-icon">🚀</div>
+      </div>
+    </section>
+
+    <div class="section-header" id="catalog">
+      <h2 class="section-title">Каталог товаров</h2>
+    </div>
+
+    <div class="products-grid" id="productsGrid"></div>
+
+    <div class="section-header" id="features">
+      <h2 class="section-title">Почему мы</h2>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Быстрая доставка</h3>
+        <p>Доставляем заказы по всей России за 1-3 дня с полным страхованием отправления.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Гарантия качества</h3>
+        <p>Только 100% оригинальные гаджеты с официальной гарантией производителя.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💎</div>
+        <h3>Премиум сервис</h3>
+        <p>Круглосуточная техническая поддержка и помощь в настройке устройств.</p>
+      </div>
+    </div>
+<section class="reviews-section" id="reviews">
+      <div class="section-header">
+        <h2 class="section-title">Отзывы наших клиентов</h2>
+        <button class="btn btn--primary" id="addReviewBtn">Оставить отзыв</button>
+      </div>
+      <div class="reviews-grid" id="reviewsGrid">
+        <!-- Отзывы будут добавлены через JS -->
+      </div>
+    </section>
+
+    <footer class="footer" id="footer">
+      <a href="#" class="logo">NEON<span>TECH</span></a>
+      <p>📞 +7 (800) 555-35-35 | ✉️ support@neontech.ru</p>
+      <p>&copy; 2026 NEON TECH. Все права защищены.</p>
+      <p style="margin-top: 10px; font-size: 12px;">
+        <a href="admin.html" style="color: var(--text-muted); text-decoration: none;">Вход для персонала</a>
+      </p>
+    </footer>
+  </div>
+
+  <div class="modal" id="cartModal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h3>Ваша корзина</h3>
+        <button class="modal__close" id="cartClose">&times;</button>
+      </div>
+      <div class="modal__body" id="cartBody">
+        <p class="empty-cart">Корзина пуста</p>
+      </div>
+      <div class="modal__footer" id="cartFooter" style="display: none;">
+        <div class="cart-total">
+          <span>Итого:</span>
+          <span id="cartTotalPrice">0 ₽</span>
+        </div>
+        <form class="order-form" id="orderForm">
+          <h4>Оформление заказа</h4>
+          <div class="form-group"><input type="text" id="orderName" placeholder="Ваше имя" required></div>
+          <div class="form-group">
+            <input type="tel" id="orderPhone" placeholder="Телефон (+7 ...)" required>
+            <div id="phoneError" class="error-message" style="display: none; color: #ff4444; font-size: 12px; margin-top: 5px;"></div>
+          </div>
+          <button type="submit" class="btn btn--primary btn--full">Оформить заказ</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  
+  <!-- Модалка отзыва -->
+  <div class="review-modal" id="reviewModal">
+    <div class="review-modal__content">
+      <div class="review-modal__header">
+        <h3>Оставить отзыв</h3>
+        <button class="review-modal__close" id="reviewModalClose">&times;</button>
+      </div>
+      <form class="review-form" id="reviewForm">
+        <div class="form-group"><input type="text" id="reviewName" placeholder="Ваше имя" required></div>
+        <div class="star-rating" id="starRating">
+          <span data-rating="1">★</span><span data-rating="2">★</span><span data-rating="3">★</span><span data-rating="4">★</span><span data-rating="5">★</span>
+        </div>
+        <textarea id="reviewText" placeholder="Ваш отзыв..." required></textarea>
+        <button type="submit" class="btn btn--primary btn--full">Отправить</button>
+      </form>
+    </div>
+  </div>
+<!-- Модальное окно товара -->
+  <div class="product-modal" id="productModal">
+    <div class="product-modal__content" id="productModalContent">
+      <button class="product-modal__close" id="productModalClose">&times;</button>
+      <div class="product-modal__image" id="productModalImage"></div>
+      <div class="product-modal__info">
+        <h2 class="product-modal__title" id="productModalTitle"></h2>
+        <div class="product-modal__price" id="productModalPrice"></div>
+        <p class="product-modal__desc" id="productModalDesc"></p>
+        <hr class="product-modal__divider">
+        <h4 style="margin-bottom: 10px;">Отзывы</h4>
+        <div class="product-reviews" id="productReviews"></div>
+        <hr class="product-modal__divider">
+        <h4 style="margin-bottom: 10px;">Оставить отзыв</h4>
+        <form class="product-review-form" id="productReviewForm">
+          <input type="text" id="productReviewName" placeholder="Ваше имя" required>
+          <div class="star-rating" id="productStarRating">
+            <span data-rating="1">★</span><span data-rating="2">★</span><span data-rating="3">★</span><span data-rating="4">★</span><span data-rating="5">★</span>
+          </div>
+          <textarea id="productReviewText" placeholder="Ваш отзыв..." rows="2" required></textarea>
+          <button type="submit" class="btn btn--primary">Отправить отзыв</button>
+        </form>
+        <div class="product-modal__actions">
+          <button class="btn btn--primary btn--full" id="productAddToCart" style="margin-top: 12px;">В корзину</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      { id: 1, title: 'Беспроводные наушники', price: 12990, image: 'images/headphones.png', desc: 'Полностью беспроводные наушники с активным шумоподавлением и режимом прозрачности. Автономная работа до 30 часов вместе с кейсом, а зарядка через USB-C возвращает энергию за 10 минут. Прочное силиконовое крепление не даёт наушникам выпадать даже на самой быстрой пробежке.' },
+      { id: 2, title: 'Механическая клавиатура', price: 8500, image: 'images/keyboard.png', desc: 'Механическая клавиатура с красными переключателями и RGB-подсветкой 16,8 млн цветов. Корпус из анодированного алюминия не скрипит и не прогибается, а hot-swap сокет позволяет менять переключатели без паяльника.' },
+      { id: 3, title: 'Игровая мышь', price: 4200, image: 'images/mouse.png', desc: 'Игровая мышь с оптическим датчиком 12000 DPI и регулировкой в пяти ступенях. Сила нажатия и время отклика клавиш настраиваются под ваш стиль игры через фирменный софт. Вес всего 65 граммов — рука не устаёт даже после нескольких часов каток.' },
+      { id: 4, title: 'VR-очки', price: 35000, image: 'images/vr.png', desc: 'VR-шлем с разрешением 2160×2160 на каждый глаз и полем зрения 110°. Отслеживание головы и жестов в 6DoF работает без внешних камер. Встроенные динамики с пространственным звуком делают игры и фильмы по-настоящему объемными.' },
+      { id: 5, title: 'Умные часы', price: 15500, image: 'images/watch.png', desc: 'Умные часы с AMOLED-экраном Always-On и встроенным GPS. Определяют пульс, сон и уровень стресса, а 120+ режимов тренировок покрывают практически любой вид активности. Водозащита 5 ATM позволяет плавать в открытом бассейне.' },
+      { id: 6, title: 'Колонка', price: 6900, image: 'images/speaker.png', desc: 'Портативная колонка с мощностью 30 Вт и глубоким басом благодаря пассивным излучателям. Корпус не боится воды и пыли по стандарту IP67, а одного заряда хватает на 24 часа воспроизведения. Поддерживает Bluetooth 5.3 и TWS-связку двух колонок в стерео.' },
+      { id: 7, title: 'Микрофон', price: 9200, image: 'images/mic.png', desc: 'Конденсаторный микрофон с кардиоидной диаграммой направленности, которая захватывает только ваш голос. Встроенный поворотный поп-фильтр и мягкая подвеска гасят стук по столу и вибрации. Подключение по USB — работает сразу без драйверов.' },
+      { id: 8, title: 'Power Bank', price: 3500, image: 'images/powerbank.png', desc: 'Power Bank ёмкостью 20000 мА·ч заряжает смартфон до трёх раз. Быстрая зарядка 22,5 Вт и двойной USB-A порт позволяют одновременно заряжать телефон и наушники. LED-индикатор точно показывает, сколько заряда осталось.' }
+    ];
+  
+    // Предзаполненные отзывы для каждого товара
+    const seedReviews = {
+      1: [{ name: 'Алексей', rating: 5, text: 'Отличные наушники! Шумоподавление работает просто отлично, в метро не слышно ничего.', date: '15.11.2026' }],
+      2: [{ name: 'Мария', rating: 4, text: 'Клавиатура очень отзывчивая, подсветка настраивается как душе угодно. Минус — нет русификации.', date: '12.11.2026' }],
+      3: [{ name: 'Дмитрий', rating: 5, text: 'Лёгкая, точная, сенсор не дрожит. Идеальная мышь для шутеров!', date: '10.11.2026' }],
+      4: [{ name: 'Елена', rating: 5, text: 'Качество картинки поражает — будто действительно оказываешься внутри игры.', date: '08.11.2026' }],
+      5: [{ name: 'Игорь', rating: 4, text: 'Экран яркий, GPS работает точно. Зарядка держит сутки активного использования.', date: '05.11.2026' }],
+      6: [{ name: 'Анна', rating: 5, text: 'Звук мощный и чистый. Беру на пляж, вода и песок ей не страшны.', date: '01.11.2026' }],
+      7: [{ name: 'Сергей', rating: 5, text: 'Запись голоса чёткая, посторонние звуки не ловит. Отлично для стримов!', date: '28.10.2026' }],
+      8: [{ name: 'Ольга', rating: 4, text: 'Емкость большая, заряжает быстро. Чуть тяжеловато для кармана, но в сумке отлично.', date: '25.10.2026' }]
+    };
+let cart = JSON.parse(localStorage.getItem('neon_cart')) || [];
+
+    const productsGrid = document.getElementById('productsGrid');
+    const cartToggle = document.getElementById('cartToggle');
+    const cartModal = document.getElementById('cartModal');
+    const cartClose = document.getElementById('cartClose');
+    const cartBody = document.getElementById('cartBody');
+    const cartFooter = document.getElementById('cartFooter');
+    const cartTotalPrice = document.getElementById('cartTotalPrice');
+    const cartBadge = document.getElementById('cartBadge');
+    const orderForm = document.getElementById('orderForm');
+    const toast = document.getElementById('toast');
+    const phoneError = document.getElementById('phoneError');
+    const orderPhone = document.getElementById('orderPhone');
+
+    function isValidPhone(phone) {
+      // Убираем всё, кроме цифр
+      const digits = phone.replace(/\D/g, '');
+      // Проверяем, что количество цифр от 10 до 15
+      return digits.length >= 10 && digits.length <= 15;
+    }
+
+    function validatePhone() {
+      const phone = orderPhone.value.trim();
+      if (!phone) {
+        phoneError.textContent = 'Введите номер телефона';
+        phoneError.style.display = 'block';
+        return false;
+      }
+      if (!isValidPhone(phone)) {
+        phoneError.textContent = 'Номер должен содержать 10-15 цифр';
+        phoneError.style.display = 'block';
+        return false;
+      }
+      phoneError.style.display = 'none';
+      return true;
+    }
+
+    orderPhone.addEventListener('input', validatePhone);
+
+    function renderProducts() {
+      productsGrid.innerHTML = '';
+      products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <div class="product-img"><img src="${product.image}" alt="${product.title}"></div>
+          <h3 class="product-title">${product.title}</h3>
+          <div class="product-footer">
+            <span class="product-price">${product.price.toLocaleString('ru-RU')} ₽</span>
+            <button class="btn btn--primary" onclick="addToCart(${product.id})">В корзину</button>
+          </div>
+        `;
+        card.addEventListener('click', (e) => {
+          if (e.target.tagName === 'BUTTON') return;
+          openProductModal(product.id);
+        });
+        card.style.cursor = 'pointer';
+        productsGrid.appendChild(card);
+      });
+    }
+
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
+
+      const existingItem = cart.find(item => item.id === productId);
+      if (existingItem) {
+        existingItem.qty += 1;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+
+      saveCart();
+      updateCartUI();
+      showToast(`Товар "${product.title}" добавлен в корзину!`);
+    }
+
+    // ================= МОДАЛЬНОЕ ОКНО ТОВАРА =================
+    const productModal = document.getElementById('productModal');
+    const productModalClose = document.getElementById('productModalClose');
+    const productModalImage = document.getElementById('productModalImage');
+    const productModalTitle = document.getElementById('productModalTitle');
+    const productModalPrice = document.getElementById('productModalPrice');
+    const productModalDesc = document.getElementById('productModalDesc');
+    const productReviewsEl = document.getElementById('productReviews');
+    const productReviewForm = document.getElementById('productReviewForm');
+    const productReviewName = document.getElementById('productReviewName');
+    const productReviewText = document.getElementById('productReviewText');
+    const productStarRating = document.getElementById('productStarRating');
+    const productAddToCart = document.getElementById('productAddToCart');
+    let currentProductId = null;
+    let productSelectedRating = 0;
+
+    // Инициализация: сливаем seedReviews с localStorage
+    (function initProductReviews() {
+      let stored = JSON.parse(localStorage.getItem('product_reviews')) || {};
+      Object.keys(seedReviews).forEach(id => {
+        if (!stored[id]) stored[id] = seedReviews[id];
+      });
+      localStorage.setItem('product_reviews', JSON.stringify(stored));
+    })();
+
+    function getProductReviews(productId) {
+      const all = JSON.parse(localStorage.getItem('product_reviews')) || {};
+      return all[productId] || [];
+    }
+
+    function renderProductReviews() {
+      const reviews = getProductReviews(currentProductId);
+      if (reviews.length === 0) {
+        productReviewsEl.innerHTML = '<p class="no-reviews">Пока нет отзывов на этот товар.</p>';
+        return;
+      }
+      productReviewsEl.innerHTML = '';
+      reviews.forEach(review => {
+        const item = document.createElement('div');
+        item.className = 'product-review';
+        item.innerHTML = `
+          <div class="product-review__head">
+            <span class="product-review__name">${review.name}</span>
+            <span class="product-review__stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
+          </div>
+          <div class="product-review__text">${review.text}</div>
+          <div class="product-review__date">${review.date}</div>
+        `;
+        productReviewsEl.appendChild(item);
+      });
+    }
+
+    function openProductModal(productId) {
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
+      currentProductId = productId;
+
+      productModalImage.innerHTML = `<img src="${product.image}" alt="${product.title}">`;
+      productModalTitle.textContent = product.title;
+      productModalPrice.textContent = product.price.toLocaleString('ru-RU') + ' ₽';
+      productModalDesc.textContent = product.desc;
+      renderProductReviews();
+
+      // Сброс формы
+      productReviewForm.reset();
+      productSelectedRating = 0;
+      productStarRating.querySelectorAll('span').forEach(s => s.classList.remove('active'));
+
+      productModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProductModal() {
+      productModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    productModalClose.addEventListener('click', closeProductModal);
+
+    productModal.addEventListener('click', (e) => {
+      if (e.target === productModal) closeProductModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && productModal.classList.contains('active')) {
+        closeProductModal();
+      }
+    });
+
+    productStarRating.addEventListener('click', (e) => {
+      if (e.target.tagName === 'SPAN') {
+        productSelectedRating = parseInt(e.target.dataset.rating);
+        productStarRating.querySelectorAll('span').forEach(s => {
+          s.classList.toggle('active', parseInt(s.dataset.rating) <= productSelectedRating);
+        });
+      }
+    });
+
+    productAddToCart.addEventListener('click', () => {
+      addToCart(currentProductId);
+    });
+
+    productReviewForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = productReviewName.value.trim();
+      const text = productReviewText.value.trim();
+
+      if (!name || !text || productSelectedRating === 0) {
+        alert('Заполните все поля и выберите оценку');
+        return;
+      }
+
+      const all = JSON.parse(localStorage.getItem('product_reviews')) || {};
+      if (!all[currentProductId]) all[currentProductId] = [];
+      all[currentProductId].push({
+        name,
+        rating: productSelectedRating,
+        text,
+        date: new Date().toLocaleDateString('ru-RU')
+      });
+      localStorage.setItem('product_reviews', JSON.stringify(all));
+
+      productReviewForm.reset();
+      productSelectedRating = 0;
+      productStarRating.querySelectorAll('span').forEach(s => s.classList.remove('active'));
+
+      renderProductReviews();
+      showToast('Отзыв успешно отправлен! Спасибо!');
+    });
+
+    function removeFromCart(productId) {
+      cart = cart.filter(item => item.id !== productId);
+      saveCart();
+      updateCartUI();
+    }
+
+    function changeQty(productId, delta) {
+      const item = cart.find(item => item.id === productId);
+      if (!item) return;
+
+      item.qty += delta;
+      if (item.qty <= 0) {
+        removeFromCart(productId);
+      } else {
+        saveCart();
+        updateCartUI();
+      }
+    }
+
+    function saveCart() {
+      localStorage.setItem('neon_cart', JSON.stringify(cart));
+    }
+
+    function updateCartUI() {
+      const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+      cartBadge.textContent = totalCount;
+
+      if (cart.length === 0) {
+        cartBody.innerHTML = '<p class="empty-cart">Корзина пуста</p>';
+        cartFooter.style.display = 'none';
+        return;
+      }
+
+      cartFooter.style.display = 'block';
+      cartBody.innerHTML = '';
+
+      let totalSum = 0;
+
+      cart.forEach(item => {
+        const itemTotal = item.price * item.qty;
+        totalSum += itemTotal;
+
+        const cartItemEl = document.createElement('div');
+        cartItemEl.className = 'cart-item';
+        cartItemEl.innerHTML = `
+          <div class="cart-item__info">
+            <div class="cart-item__title">${item.title}</div>
+            <div class="cart-item__price">${item.price.toLocaleString('ru-RU')} ₽</div>
+          </div>
+          <div class="cart-item__controls">
+            <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+            <span class="cart-item__qty">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+          </div>
+          <button class="cart-item__remove" onclick="removeFromCart(${item.id})" title="Удалить">&times;</button>
+        `;
+        cartBody.appendChild(cartItemEl);
+      });
+
+      cartTotalPrice.textContent = `${totalSum.toLocaleString('ru-RU')} ₽`;
+    }
+
+    cartToggle.addEventListener('click', () => {
+      cartModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    cartClose.addEventListener('click', () => {
+      cartModal.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    cartModal.addEventListener('click', (e) => {
+      if (e.target === cartModal) {
+        cartModal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    orderForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('orderName').value.trim();
+      const phone = document.getElementById('orderPhone').value.trim();
+
+      if (!name) {
+        alert('Введите имя');
+        return;
+      }
+      if (!validatePhone()) return;
+
+      const orderData = {
+        id: 'ORD-' + Math.floor(100000 + Math.random() * 900000),
+        date: new Date().toLocaleString('ru-RU'),
+        customer: { name, phone },
+        items: [...cart],
+        total: cart.reduce((sum, item) => sum + item.price * item.qty, 0)
+      };
+
+      let orders = JSON.parse(localStorage.getItem('neon_orders')) || [];
+      orders.push(orderData);
+      localStorage.setItem('neon_orders', JSON.stringify(orders));
+
+      cart = [];
+      saveCart();
+      updateCartUI();
+
+      cartModal.classList.remove('active');
+      document.body.style.overflow = '';
+      orderForm.reset();
+
+      showToast(`Заказ №${orderData.id} успешно оформлен! 🎉`);
+    });
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('active');
+      setTimeout(() => {
+        toast.classList.remove('active');
+      }, 3000);
+    }
+
+    renderProducts();
+    updateCartUI();
+    renderReviews();
+
+    // Отзывы
+    const addReviewBtn = document.getElementById('addReviewBtn');
+    const reviewModal = document.getElementById('reviewModal');
+    const reviewModalClose = document.getElementById('reviewModalClose');
+    const reviewForm = document.getElementById('reviewForm');
+    const starRating = document.getElementById('starRating');
+    const reviewName = document.getElementById('reviewName');
+    const reviewText = document.getElementById('reviewText');
+    let selectedRating = 0;
+
+    function renderReviews() {
+      const reviews = JSON.parse(localStorage.getItem('neon_reviews')) || [];
+      const reviewsGrid = document.getElementById('reviewsGrid');
+      
+      if (reviews.length === 0) {
+        reviewsGrid.innerHTML = '<p class="no-reviews">Пока нет отзывов. Будьте первым!</p>';
+        return;
+      }
+
+      reviewsGrid.innerHTML = '';
+      reviews.forEach((review, index) => {
+        const reviewCard = document.createElement('div');
+        reviewCard.className = 'review-card';
+        reviewCard.innerHTML = `
+          <div class="review-header">
+            <span class="review-author">${review.name}</span>
+            <span class="review-stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
+          </div>
+          <div class="review-text">${review.text}</div>
+          <div class="review-date">${review.date}</div>
+        `;
+        reviewsGrid.appendChild(reviewCard);
+      });
+    }
+
+    addReviewBtn.addEventListener('click', () => {
+      reviewModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    reviewModalClose.addEventListener('click', () => {
+      reviewModal.classList.remove('active');
+      document.body.style.overflow = '';
+      reviewForm.reset();
+      selectedRating = 0;
+      starRating.querySelectorAll('span').forEach(s => s.classList.remove('active'));
+    });
+
+    reviewModal.addEventListener('click', (e) => {
+      if (e.target === reviewModal) {
+        reviewModal.classList.remove('active');
+        document.body.style.overflow = '';
+        reviewForm.reset();
+        selectedRating = 0;
+        starRating.querySelectorAll('span').forEach(s => s.classList.remove('active'));
+      }
+    });
+
+    starRating.addEventListener('click', (e) => {
+      if (e.target.tagName === 'SPAN') {
+        selectedRating = parseInt(e.target.dataset.rating);
+        starRating.querySelectorAll('span').forEach(s => {
+          s.classList.toggle('active', parseInt(s.dataset.rating) <= selectedRating);
+        });
+      }
+    });
+
+    reviewForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = reviewName.value.trim();
+      const text = reviewText.value.trim();
+      
+      if (!name || !text || selectedRating === 0) {
+        alert('Заполните все поля и выберите оценку');
+        return;
+      }
+
+      const reviewData = {
+        name,
+        rating: selectedRating,
+        text,
+        date: new Date().toLocaleDateString('ru-RU')
+      };
+
+      let reviews = JSON.parse(localStorage.getItem('neon_reviews')) || [];
+      reviews.push(reviewData);
+      localStorage.setItem('neon_reviews', JSON.stringify(reviews));
+
+      reviewModal.classList.remove('active');
+      document.body.style.overflow = '';
+      reviewForm.reset();
+      selectedRating = 0;
+      starRating.querySelectorAll('span').forEach(s => s.classList.remove('active'));
+
+      renderReviews();
+      showToast('Отзыв успешно отправлен! Спасибо!');
+    });
+  </script>
+</body>
+</html>
